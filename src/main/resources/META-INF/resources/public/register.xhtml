@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:head>
+	<title>Register</title>
+	<h:outputStylesheet name="/css/login.css" />
+</h:head>
+
+<h:body>
+	<h:form prependId="false">
+	
+		<p:growl life="3000" />
+		
+		<p:fieldset legend="Register">
+			<p:panelGrid columns="1" styleClass="ui-fluid center ui-noborder">
+				
+				<h2>Please register</h2>
+	
+				<p:outputLabel value="Registration failed!" styleClass="red"
+					rendered="${!empty param['error']}" />
+				
+				<p:outputLabel for="email" value="Email:" />
+				<p:inputText id="email" value="#{registerBean.email}" placeholder="Email" required="true" />
+				<p:message for="email" />
+				
+				<p:outputLabel for="password1" value="Password 1:" />
+				<p:password id="password1" value="#{registerBean.password1}" placeholder="Password 1" required="true" />
+				<p:message for="password1" />
+				
+				<p:outputLabel for="password2" value="Password 2:" />
+				<p:password id="password2" value="#{registerBean.password2}" placeholder="Password 2" required="true" />
+				<p:message for="password2" />
+				
+				<p:outputLabel for="name" value="Name:" />
+				<p:inputText id="name" value="#{registerBean.name}" placeholder="Name" required="true" />
+				<p:message for="name" />
+				
+				<p:outputLabel for="lastName" value="Last Name:" />
+				<p:inputText id="lastName" value="#{registerBean.lastName}" placeholder="Last Name" required="true" />
+				<p:message for="lastName" />
+				
+				<p:outputLabel for="roles" value="Roles:" />
+		        <p:selectManyMenu id="roles" value="#{registerBean.selectedRoles}" 
+		        	var="role" showCheckbox="true" required="true">
+		            <f:selectItems value="#{registerBean.roleList}" var="role" 
+		            	itemLabel="#{role.role}" itemValue="#{role}" />
+		             
+		            <p:column>
+		                <h:outputText value="#{role.role}" />
+		            </p:column>
+		        </p:selectManyMenu>
+		        <p:message for="roles" />
+		        
+		        <p:messages />
+	
+				<p:commandButton value="Register" action="#{registerBean.register()}" update="@form" />
+				<p:button value="Back to login (button)" outcome="login" />
+				<p:commandButton value="Back to login (commandButton)" action="#{homeBean.back()}" process="@this" />
+			</p:panelGrid>
+		</p:fieldset>
+		
+	</h:form>
+</h:body>
+</html>
