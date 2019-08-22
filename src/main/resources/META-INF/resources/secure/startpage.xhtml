@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:sec="http://www.springframework.org/security/facelets/tags"
+    template="../../../WEB-INF/template.xhtml">
+    
+    <ui:define name="head">
+    	<title>Start Page</title>
+		<h:outputStylesheet name="/css/main.css" />
+    </ui:define>
+    
+    <ui:define name="content">
+	    
+        <h:body>
+            
+            <div class="authorization-div">
+            
+				<sec:authorize access="hasRole('USER')">
+					<p:outputLabel value="You have the USER role" />
+				</sec:authorize>
+				<br />
+				<sec:authorize access="hasRole('ADMIN')">
+					<p:outputLabel value="You have the ADMIN role" />
+				</sec:authorize>
+				<br />
+				<sec:authorize access="hasRole('ROLE_USER')">
+					<p:outputLabel value="You have the ROLE_USER role" />
+				</sec:authorize>
+				<br />
+				<sec:authorize access="hasRole('ROLE_ADMIN')">
+					<p:outputLabel value="You have the ROLE_ADMIN role" />
+				</sec:authorize>
+				<br />
+			    <sec:anonymous>
+			    	<p:outputLabel value="anonymous" />
+			    </sec:anonymous>
+			    <br />
+			    <sec:authenticated>
+			    	<p:outputLabel value="authenticated" />
+			    </sec:authenticated>
+			    <br />
+			    <sec:fullyAuthenticated>
+			    	<p:outputLabel value="fullyAuthenticated" />
+			    </sec:fullyAuthenticated>
+				
+			</div>
+	
+			<h:form onsubmit="this.action='#{request.contextPath}/logout';" class="logout-form">
+				<p:panelGrid>
+				<p:commandButton value="Logout" ajax="false" />
+				
+				<p:link value="Admin Page" outcome="/admin/admin.xhtml" />
+				</p:panelGrid>
+			</h:form>
+			
+			<br />
+		
+			<h:form>
+			
+				<p:panel header="PrimeFaces Hello World Example">
+					<h:panelGrid columns="2" cellpadding="4">
+		
+						<h:outputText value="First Name: " />
+						<p:inputText value="#{homeBean.firstName}" />
+		
+						<h:outputText value="Last Name: " />
+						<p:inputText value="#{homeBean.lastName}" />
+		
+						<p:commandButton value="Submit" update="greeting" 
+							oncomplete="PF('greetingDialog').show()" />
+							
+					</h:panelGrid>
+				</p:panel>
+				
+				<br />
+				
+				<p:dataTable value="#{homeBean.userList}" var="user">
+				
+					<f:facet name="header">
+				        List of Users using Spring Data
+				    </f:facet>
+				
+					<p:column headerText="id">
+						<h:outputText value="#{user.id}" />
+					</p:column>
+					<p:column headerText="email">
+						<h:outputText value="#{user.email}" />
+					</p:column>
+					<p:column headerText="roles">
+						<h:outputText value="#{homeBean.getUserRoles(user)}" />
+					</p:column>
+					
+					<f:facet name="footer">
+				        In total there are #{fn:length(homeBean.userList)} users.
+				    </f:facet>
+				
+				</p:dataTable>
+				
+				<br />
+				
+				<p:dataTable value="#{homeBean.listDataSource}" var="user">
+				
+					<f:facet name="header">
+				        List of Users using DataSource
+				    </f:facet>
+				
+					<p:column headerText="id">
+						<h:outputText value="#{user.id}" />
+					</p:column>
+					<p:column headerText="email">
+						<h:outputText value="#{user.email}" />
+					</p:column>
+					<p:column headerText="roles">
+						<h:outputText value="#{homeBean.getUserRoles(user)}" />
+					</p:column>
+					
+					<f:facet name="footer">
+				        In total there are #{fn:length(homeBean.userList)} users.
+				    </f:facet>
+				
+				</p:dataTable>
+				
+				<br />
+				
+				<p:dataTable value="#{homeBean.listEntityManagerHQL}" var="user">
+				
+					<f:facet name="header">
+				        List of Users using Entity Manager and HQL Query
+				    </f:facet>
+				
+					<p:column headerText="id">
+						<h:outputText value="#{user.id}" />
+					</p:column>
+					<p:column headerText="email">
+						<h:outputText value="#{user.email}" />
+					</p:column>
+					<p:column headerText="roles">
+						<h:outputText value="#{homeBean.getUserRoles(user)}" />
+					</p:column>
+					
+					<f:facet name="footer">
+				        In total there are #{fn:length(homeBean.userList)} users.
+				    </f:facet>
+				
+				</p:dataTable>
+				
+				<br />
+				
+				<p:dataTable value="#{homeBean.listEntityManagerNative}" var="user">
+				
+					<f:facet name="header">
+				        List of Users using Entity Manager and Native Query
+				    </f:facet>
+				
+					<p:column headerText="id">
+						<h:outputText value="#{user.id}" />
+					</p:column>
+					<p:column headerText="email">
+						<h:outputText value="#{user.email}" />
+					</p:column>
+					<p:column headerText="roles">
+						<h:outputText value="#{homeBean.getUserRoles(user)}" />
+					</p:column>
+					
+					<f:facet name="footer">
+				        In total there are #{fn:length(homeBean.userList)} users.
+				    </f:facet>
+				
+				</p:dataTable>
+		
+				<p:dialog header="Greeting" widgetVar="greetingDialog" modal="true" appendTo="@(body)"
+					resizable="false">
+					<h:panelGrid id="greeting" columns="1" cellpadding="4">
+						<h:outputText value="#{homeBean.showGreeting()}" />
+					</h:panelGrid>
+				</p:dialog>
+			</h:form>
+            
+        </h:body>
+    </ui:define>
+</ui:composition>
