@@ -1,2 +1,0 @@
-# joinfaces-project
-joinfaces project
